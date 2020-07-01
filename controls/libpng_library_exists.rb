@@ -20,7 +20,7 @@ control 'core-plans-libpng-library-exists' do
   end
 
   library_filename = input('library_filename', value: 'libpng.so')
-  library_full_path = File.join(plan_installation_directory.stdout.strip, 'lib', "#{library_filename}")
+  library_full_path = File.join(plan_installation_directory.stdout.strip, 'lib', library_filename)
   describe file(library_full_path) do
     it { should exist }
   end
@@ -28,7 +28,7 @@ control 'core-plans-libpng-library-exists' do
   plan_pkg_ident = ((plan_installation_directory.stdout.strip).match /(?<=pkgs\/)(.*)/)[1]
   plan_pkg_version = (plan_pkg_ident.match /^#{plan_origin}\/#{plan_name}\/(?<version>.*)\//)[:version]
   pkgconfig_filename = input('pkgconfig_filename', value: 'libpng.pc')
-  pkgconfig_full_path = File.join(plan_installation_directory.stdout.strip, 'lib', 'pkgconfig', "#{pkgconfig_filename}")
+  pkgconfig_full_path = File.join(plan_installation_directory.stdout.strip, 'lib', 'pkgconfig', pkgconfig_filename)
   describe command("cat #{pkgconfig_full_path}") do
     its('exit_status') { should eq 0 }
     its('stdout') { should_not be_empty }
